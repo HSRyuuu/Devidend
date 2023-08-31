@@ -1,4 +1,4 @@
-package com.example.devidend;
+package com.devidend;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
