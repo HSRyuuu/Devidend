@@ -1,0 +1,25 @@
+spring:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create
+      use-new-id-generator-mappings: false
+    show-sql: true
+    defer-datasource-initialization: true
+
+  datasource:
+    url: jdbc:h2:mem:devidend;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+
+
+
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
