@@ -1,5 +1,6 @@
 package com.devidend.persist.entity;
 
+import com.devidend.model.Company;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,4 +23,8 @@ public class CompanyEntity {
 
     private String name;
 
+    public CompanyEntity(Company company) {
+        this.ticker = company.getTicker();
+        this.name = company.getName();;
+    }
 }
