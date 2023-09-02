@@ -10,6 +10,8 @@ import com.devidend.persist.entity.DividendEntity;
 import com.devidend.scraper.Scraper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,6 +32,11 @@ public class CompanyService {
             throw new RuntimeException("already exists ticker -> " + ticker);
         }
         return storeCompanyAndDividend(ticker);
+    }
+
+
+    public Page<CompanyEntity> getAllCompany(Pageable pageable){
+        return companyRepository.findAll(pageable);
     }
 
     private Company storeCompanyAndDividend(String ticker){
