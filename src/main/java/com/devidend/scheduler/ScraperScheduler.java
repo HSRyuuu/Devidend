@@ -2,6 +2,7 @@ package com.devidend.scheduler;
 
 import com.devidend.model.Company;
 import com.devidend.model.ScrapedResult;
+import com.devidend.model.constants.CacheKey;
 import com.devidend.persist.CompanyRepository;
 import com.devidend.persist.DividendRepository;
 import com.devidend.persist.entity.CompanyEntity;
@@ -9,6 +10,8 @@ import com.devidend.persist.entity.DividendEntity;
 import com.devidend.scraper.Scraper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,23 +21,14 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@EnableCaching
 public class ScraperScheduler {
 
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
     private final Scraper scraper;
 
-    //@Scheduled(fixedDelay = 1000)
-    public void test1() throws InterruptedException {
-        Thread.sleep(10000);//10초
-        System.out.println(Thread.currentThread().getName() + " -> 테스트 1 : " + LocalDateTime.now());
-    }
-    //@Scheduled(fixedDelay = 1000)
-    public void test2() throws InterruptedException {
-        Thread.sleep(1000);//1초
-        System.out.println(Thread.currentThread().getName() + " -> 테스트 2 : " + LocalDateTime.now());
-    }
-
+    @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")
     public void yahooFinanceScheduling() {
         log.info("scraping scheduler is started");
@@ -43,9 +37,7 @@ public class ScraperScheduler {
 
         // 회사마다 배당금 정보를 스크래핑
         for (CompanyEntity company : companies) {
-            ScrapedResult scrapedResult = scraper.scrap(Company.builder()
-                    .name(company.getName())
-                    .ticker(company.getTicker()).build());
+            ScrapedResult scrapedResult = scraper.scrap(new Company(company.getTicker(), company.getName()));
             // 스크래핑한 정보 중 데이터베이스에 없는 값만 저장
             scrapedResult.getDividends().stream()
                     .map(e -> new DividendEntity(company.getId(), e))
@@ -63,5 +55,16 @@ public class ScraperScheduler {
                 Thread.currentThread().interrupted();
             }
         }
+    }
+
+    //@Scheduled(fixedDelay = 1000)
+    public void test1() throws InterruptedException {
+        Thread.sleep(10000);//10초
+        System.out.println(Thread.currentThread().getName() + " -> 테스트 1 : " + LocalDateTime.now());
+    }
+    //@Scheduled(fixedDelay = 1000)
+    public void test2() throws InterruptedException {
+        Thread.sleep(1000);//1초
+        System.out.println(Thread.currentThread().getName() + " -> 테스트 2 : " + LocalDateTime.now());
     }
 }
