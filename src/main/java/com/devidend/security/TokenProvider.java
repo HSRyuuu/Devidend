@@ -62,7 +62,6 @@ public class TokenProvider {
             return false;
         }
         var claims = this.parseClaims(token);
-        log.info("validate Token {}", claims);
         return !claims.getExpiration().before(new Date());
 
     }
