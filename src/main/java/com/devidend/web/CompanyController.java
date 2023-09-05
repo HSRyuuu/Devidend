@@ -31,7 +31,6 @@ public class CompanyController {
 
     @GetMapping()
     @PreAuthorize("hasRole('READ')")
-    @Transactional
     public ResponseEntity<?> searchCompany(final Pageable pageable){
         Page<CompanyEntity> companies = companyService.getAllCompany(pageable);
         return ResponseEntity.ok(companies);

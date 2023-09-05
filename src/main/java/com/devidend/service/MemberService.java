@@ -1,5 +1,6 @@
 package com.devidend.service;
 
+import com.devidend.exception.impl.AlreadyExistUserException;
 import com.devidend.model.Auth;
 import com.devidend.model.MemberEntity;
 import com.devidend.persist.MemberRepository;
@@ -28,7 +29,7 @@ public class MemberService implements UserDetailsService {
     public MemberEntity register(Auth.SignUp member){
         boolean exists = memberRepository.existsByUsername(member.getUsername());
         if(exists){
-            throw new RuntimeException("이미 사용중인 아이디 입니다.");
+            throw new AlreadyExistUserException();
         }
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         MemberEntity result = memberRepository.save(member.toEntity());
