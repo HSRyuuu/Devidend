@@ -1,9 +1,11 @@
 package com.devidend.model;
 
+import com.devidend.model.constants.Authority;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -25,7 +27,7 @@ public class MemberEntity implements UserDetails {
 
     private String password;
 
-    @ElementCollection
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private List<String> roles;
 
     @Override

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,6 +82,16 @@ public class CompanyService {
 
     public void deleteAutocompleteKeyword(String keyword) {
         trie.remove(keyword);
+    }
+
+    public String deleteCompany(String ticker){
+        CompanyEntity company = companyRepository.findByTicker(ticker)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사 입니다."));
+        dividendRepository.deleteAllByCompanyId(company.getId());
+        companyRepository.delete(company);
+
+        deleteAutocompleteKeyword(company.getName());
+        return company.getName();
     }
 
 
