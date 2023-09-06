@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
 
-    //@Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
+    @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
     public ScrapedResult getDividendByCompanyName(String companyName){
         // 1. 회사명을 기준으로 회사 정보 조회
         CompanyEntity company = companyRepository.findByName(companyName)

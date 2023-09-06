@@ -17,7 +17,7 @@ public class FinanceController {
 
     private final FinanceService financeService;
 
-    @PreAuthorize("hasRole('READ')")
+    @PreAuthorize("hasRole('WRITE')")
     @GetMapping("/dividend/{companyName}")
     public ResponseEntity<?> searchFinance(@PathVariable String companyName){
         ScrapedResult result = financeService.getDividendByCompanyName(companyName);
