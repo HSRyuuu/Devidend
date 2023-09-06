@@ -57,15 +57,4 @@ public class ScraperScheduler {
             }
         }
     }
-
-    //@Scheduled(fixedDelay = 1000)
-    public void test1() throws InterruptedException {
-        Thread.sleep(10000);//10초
-        System.out.println(Thread.currentThread().getName() + " -> 테스트 1 : " + LocalDateTime.now());
-    }
-    //@Scheduled(fixedDelay = 1000)
-    public void test2() throws InterruptedException {
-        Thread.sleep(1000);//1초
-        System.out.println(Thread.currentThread().getName() + " -> 테스트 2 : " + LocalDateTime.now());
-    }
 }

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CustomExceptionHandler {
 
     @ExceptionHandler(AbstractException.class)
-    protected ResponseEntity<?> handleCustomException(AbstractException e){
+    protected ResponseEntity<?> handleCustomException(AbstractException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
-                                                    .code(e.getStatusCode())
-                                                    .message(e.getMessage()).build();
+                .code(e.getStatusCode())
+                .message(e.getMessage()).build();
         return new ResponseEntity<>(errorResponse, HttpStatus.resolve(e.getStatusCode()));
     }
 }
